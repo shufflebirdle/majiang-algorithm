@@ -11,6 +11,25 @@ public class SingleRoundRealtimeDataBean {
 	 */
 	private String _id;
 	
-	private String 
+	/**
+	 * 当前等待操作的用户
+	 */
+	private Integer currentUserInd;
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
+	}
+
+	public Integer getCurrentUserInd() {
+		return currentUserInd;
+	}
+
+	public void setCurrentUserInd(Integer currentUserInd) {
+		this.currentUserInd = currentUserInd;
+	}
 
 }
