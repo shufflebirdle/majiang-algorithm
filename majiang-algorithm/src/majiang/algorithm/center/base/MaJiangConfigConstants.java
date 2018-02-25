@@ -1,7 +1,9 @@
 package majiang.algorithm.center.base;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 麻将常用配置变量
@@ -26,6 +28,31 @@ public class MaJiangConfigConstants {
 		 "21","22","23","24","25","26","27","28","29",
 		 "21","22","23","24","25","26","27","28","29",
 		 "21","22","23","24","25","26","27","28","29"};
+	
+	/**
+	 * 不重复基础麻将牌
+	 */
+	public static final String[] BASE_PAI_DISTINCT = 
+		{"01","02","03","04","05","06","07","08","09",
+		 "11","12","13","14","15","16","17","18","19",
+		 "21","22","23","24","25","26","27","28","29"};
+	
+	/**
+	 * 将
+	 */
+	public static final Set<String> JIANG_PAI = new HashSet<String>();
+	static{
+		JIANG_PAI.add("02");
+		JIANG_PAI.add("05");
+		JIANG_PAI.add("08");
+		JIANG_PAI.add("12");
+		JIANG_PAI.add("15");
+		JIANG_PAI.add("18");
+		JIANG_PAI.add("22");
+		JIANG_PAI.add("25");
+		JIANG_PAI.add("28");
+	}
+	
 	/**
 	 * 牌名
 	 */
@@ -76,5 +103,37 @@ public class MaJiangConfigConstants {
 	 * 操作牌类型：暗杠
 	 */
 	public static final int operate_pai_type_3 = 3;
+	/**
+	 * 操作牌类型：胡牌
+	 */
+	public static final int operate_pai_type_4 = 4;
+	
+	public static final Map<Integer, String> operate_pai_type_name = new HashMap<Integer, String>();
+	
+	static{
+		operate_pai_type_name.put(operate_pai_type_0, "吃");
+		operate_pai_type_name.put(operate_pai_type_1, "碰");
+		operate_pai_type_name.put(operate_pai_type_2, "明杠");
+		operate_pai_type_name.put(operate_pai_type_3, "暗杠");
+		operate_pai_type_name.put(operate_pai_type_4, "胡牌");
+	}
+	
+	
+	/**
+	 * 胡牌类型：小七对
+	 */
+	public static final int hu_pai_type_0 = 0;
+	/**
+	 * 胡牌类型：碰碰胡
+	 */
+	public static final int hu_pai_type_1 = 1;
+	/**
+	 * 胡牌类型：清一色
+	 */
+	public static final int hu_pai_type_2 = 2;
+	/**
+	 * 胡牌类型：将将胡
+	 */
+	public static final int hu_pai_type_3 = 3;
 
 }

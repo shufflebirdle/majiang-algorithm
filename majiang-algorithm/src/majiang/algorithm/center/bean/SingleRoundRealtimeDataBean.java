@@ -15,6 +15,12 @@ public class SingleRoundRealtimeDataBean {
 	 * 当前等待操作的用户
 	 */
 	private Integer currentUserInd;
+	
+	/**
+	 * 用户信息
+	 */
+	
+	private UserPaiBean[] userPaiBeans;
 
 	public String get_id() {
 		return _id;
@@ -30,6 +36,14 @@ public class SingleRoundRealtimeDataBean {
 
 	public void setCurrentUserInd(Integer currentUserInd) {
 		this.currentUserInd = currentUserInd;
+	}
+
+	public UserPaiBean[] getUserPaiBeans() {
+		return userPaiBeans;
+	}
+
+	public void setUserPaiBeans(UserPaiBean[] userPaiBeans) {
+		this.userPaiBeans = userPaiBeans;
 	}
 
 }
