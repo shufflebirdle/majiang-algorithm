@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.4">
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <context-param>
+    <param-name>showSingleSummary</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>htmlNavigator</param-name>
+    <param-value>hikefa.core.web.tag.tmp.GoogleHtmlNavigator</param-value>
+  </context-param>
+  
+  	<!--初始化logback日志配置文件 Begin -->
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:conf/logback.xml</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>logbackProperties</param-name>
+		<param-value>conf/logback.properties</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>
+		yspos.online.trade.startup.listener.LogbackInitListener
+		</listener-class>
+	</listener>
+	<!--初始化logback日志配置文件 End -->
+	
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			classpath:conf/springconf/db/cache-context-core.xml,
+			classpath:conf/springconf/db/online-context-core.xml
+		</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>initServlet</servlet-name>
+    <servlet-class>hikefa.core.web.ext.InitServlet</servlet-class>
+    <init-param>
+      <param-name>initclass</param-name>
+      <param-value>
+			hikefa.core.web.ext.init.InitGlobalInfo
+			</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- <servlet>
+    <servlet-name>log4jLoader</servlet-name>
+    <servlet-class>hikefa.core.web.ext.Log4jServlet</servlet-class>
+    <init-param>
+      <param-name>log4j</param-name>
+      <param-value>/WEB-INF/classes/conf/log4j.xml</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet> -->
+  <servlet>
+    <servlet-name>initH2Servlet</servlet-name>
+    <servlet-class>hikefa.core.web.ext.InitH2Servlet</servlet-class>
+    <init-param>
+      <param-name>port</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <init-param>
+	  <param-name>maxConnection</param-name>
+	  <param-value>20</param-value><!-- 生产时可给到50-100 -->
+	</init-param>
+    <init-param>
+      <param-name>filename</param-name>
+      <param-value></param-value>
+    </init-param>
+    <init-param>
+      <param-name>daoclass</param-name>
+      <param-value>
+			yspos.online.trade.h2.dao.CmmtexcH2Dao,
+			yspos.online.trade.h2.dao.CmmtinfH2Dao,
+			yspos.online.trade.h2.dao.TmstpprvH2Dao,
+			yspos.online.trade.h2.dao.TmstgprvH2Dao
+			
+	</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>initFromDBServlet</servlet-name>
+    <servlet-class>hikefa.core.web.ext.InitFromDBServlet</servlet-class>
+    <init-param>
+      <param-name>initclass</param-name>
+      <param-value>
+			hikefa.core.web.ext.initdb.InitServerInfoForClient,
+			hikefa.core.web.ext.initdb.InitServerInfoForServer,
+			hikefa.core.web.ext.initdb.InitRemoteServerIPKey,
+			hikefa.core.web.ext.initdb.InitDBTime
+			</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>SpringContextServlet</servlet-name>
+    <servlet-class>hikefa.core.web.ext.SpringContextServlet</servlet-class>
+    <load-on-startup>5</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>myremote</servlet-name>
+    <servlet-class>hikefa.core.myremote.server.MyRemoteDispatcherServlet</servlet-class>
+    <load-on-startup>6</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>myremote</servlet-name>
+    <url-pattern>/hessian/*</url-pattern>
+  </servlet-mapping>
+  <!-- 自动冲正任务 -->
+   <servlet>
+  	<display-name>InitAutoReverseServlet</display-name>
+  	<servlet-name>InitAutoReverseServlet</servlet-name>
+  	<servlet-class>yspos.online.trade.web.servlet.InitAutoReverseServlet</servlet-class>
+  	<load-on-startup>9</load-on-startup>
+  </servlet>
+ 
+  <servlet-mapping>
+  	<servlet-name>InitAutoReverseServlet</servlet-name>
+  	<url-pattern>/InitAutoReverseServlet</url-pattern>
+  </servlet-mapping>
+  
+    <!-- 自动重做计费任务 -->
+   <servlet>
+  	<display-name>InitAutoRedoFeeServlet</display-name>
+  	<servlet-name>InitAutoRedoFeeServlet</servlet-name>
+  	<servlet-class>yspos.online.trade.web.servlet.InitAutoRedoFeeServlet</servlet-class>
+  	<load-on-startup>7</load-on-startup>
+  </servlet>
+ 
+  <servlet-mapping>
+  	<servlet-name>InitAutoRedoFeeServlet</servlet-name>
+  	<url-pattern>/InitAutoRedoFeeServlet</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>mvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+  		classpath:conf/springconf/action/public-springcontrol.xml,
+  		classpath:conf/springconf/action/springcontrol.xml
+  		</param-value>
+    </init-param>
+    <load-on-startup>6</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mvc</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>initCache</servlet-name>
+    <servlet-class>yspos.online.trade.web.servlet.InitCacheServlet</servlet-class>
+    <load-on-startup>10</load-on-startup>
+  </servlet>
+
+  
+  <filter>
+    <filter-name>encoding</filter-name>
+    <filter-class>hikefa.core.web.filter.EncodingFilter</filter-class>
+    <init-param>
+      <param-name>encodingChar</param-name>
+      <param-value>GBK</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encoding</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <jsp-config>
+    <taglib>
+      <taglib-uri>/WEB-INF/tld/hikefa.tld</taglib-uri>
+      <taglib-location>/WEB-INF/tld/hikefa.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/WEB-INF/tld/hikefafn.tld</taglib-uri>
+      <taglib-location>/WEB-INF/tld/hikefafn.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
+      <taglib-location>/WEB-INF/jstl/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/jstl/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jstl/sql</taglib-uri>
+      <taglib-location>/WEB-INF/jstl/sql.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jstl/x</taglib-uri>
+      <taglib-location>/WEB-INF/jstl/x.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+</web-app>
